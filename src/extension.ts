@@ -25,27 +25,26 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	const disposableWindow = vscode.commands.registerCommand('henon-edit.showWindow', () => {
-            const panel = vscode.window.createWebviewPanel(
-                'webview',
-                'Sample Webview',
-                vscode.ViewColumn.One,
-                {
-					enableScripts: true
-				}
-            );
-
-			const htmlPath = path.join(context.extensionPath, 'solid', 'dist', 'index.html');
-			const htmlContent = fs.readFileSync(htmlPath, 'utf8');
-
-			// パスを変換する
-			const assetsPath = vscode.Uri.file(path.join(context.extensionPath, 'solid', 'dist', 'assets'));
-			const assetsUri = panel.webview.asWebviewUri(assetsPath);
-
-			// HTMLコンテンツ内のパスを変換
-			const convertHtmlContent = htmlContent.replace(/\.\/assets\//g, `${assetsUri}/`);
-
-			panel.webview.html = convertHtmlContent;
-		});
+		const panel = vscode.window.createWebviewPanel(
+			'webview',
+			'Sample Webview',
+			vscode.ViewColumn.One,
+			{
+				enableScripts: true,
+				localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'solid', 'src'))]
+			}
+		);
+		const htmlPath = path.join(context.extensionPath, 'solid', 'index.html');
+		const htmlContent = fs.readFileSync(htmlPath, 'utf8');
+	
+		// パスを変換する
+		const assetsPath = vscode.Uri.file(path.join(context.extensionPath, 'solid', 'src'));
+		const srcUri = panel.webview.asWebviewUri(assetsPath);
+	
+		// HTMLコンテンツ内のパスを変換
+		const convertHtmlContent = htmlContent.replace(/\.\/src\//g, `${srcUri.toString()}/`);
+		panel.webview.html = convertHtmlContent;
+	});
 
 	context.subscriptions.push(disposableHello);
 	context.subscriptions.push(disposableWindow);

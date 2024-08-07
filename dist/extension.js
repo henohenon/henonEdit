@@ -49,14 +49,15 @@ function activate(context) {
       "Sample Webview",
       vscode.ViewColumn.One,
       {
-        enableScripts: true
+        enableScripts: true,
+        localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, "solid", "src"))]
       }
     );
-    const htmlPath = path.join(context.extensionPath, "solid", "dist", "index.html");
+    const htmlPath = path.join(context.extensionPath, "solid", "index.html");
     const htmlContent = fs.readFileSync(htmlPath, "utf8");
-    const assetsPath = vscode.Uri.file(path.join(context.extensionPath, "solid", "dist", "assets"));
-    const assetsUri = panel.webview.asWebviewUri(assetsPath);
-    const convertHtmlContent = htmlContent.replace(/\.\/assets\//g, `${assetsUri}/`);
+    const assetsPath = vscode.Uri.file(path.join(context.extensionPath, "solid", "src"));
+    const srcUri = panel.webview.asWebviewUri(assetsPath);
+    const convertHtmlContent = htmlContent.replace(/\.\/src\//g, `${srcUri.toString()}/`);
     panel.webview.html = convertHtmlContent;
   });
   context.subscriptions.push(disposableHello);
