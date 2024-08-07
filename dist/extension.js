@@ -38,7 +38,8 @@ var vscode = __toESM(require("vscode"));
 function activate(context) {
   console.log('Congratulations, your extension "henon-edit" is now active!');
   const disposable = vscode.commands.registerCommand("henon-edit.helloWorld", () => {
-    vscode.window.showInformationMessage("Hello World from henon-edit!");
+    vscode.window.showInformationMessage("Hennyo World from henon-edit!");
+    vscode.window.showInformationMessage("Hemyo World from henon-edit!");
   });
   context.subscriptions.push(disposable);
 }
