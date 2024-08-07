@@ -35,13 +35,32 @@ __export(extension_exports, {
 });
 module.exports = __toCommonJS(extension_exports);
 var vscode = __toESM(require("vscode"));
+var path = __toESM(require("path"));
+var fs = __toESM(require("fs"));
 function activate(context) {
   console.log('Congratulations, your extension "henon-edit" is now active!');
-  const disposable = vscode.commands.registerCommand("henon-edit.helloWorld", () => {
+  const disposableHello = vscode.commands.registerCommand("henon-edit.helloWorld", () => {
     vscode.window.showInformationMessage("Hennyo World from henon-edit!");
     vscode.window.showInformationMessage("Hemyo World from henon-edit!");
   });
-  context.subscriptions.push(disposable);
+  const disposableWindow = vscode.commands.registerCommand("henon-edit.showWindow", () => {
+    const panel = vscode.window.createWebviewPanel(
+      "webview",
+      "Sample Webview",
+      vscode.ViewColumn.One,
+      {
+        enableScripts: true
+      }
+    );
+    const htmlPath = path.join(context.extensionPath, "solid", "dist", "index.html");
+    const htmlContent = fs.readFileSync(htmlPath, "utf8");
+    const assetsPath = vscode.Uri.file(path.join(context.extensionPath, "solid", "dist", "assets"));
+    const assetsUri = panel.webview.asWebviewUri(assetsPath);
+    const convertHtmlContent = htmlContent.replace(/\.\/assets\//g, `${assetsUri}/`);
+    panel.webview.html = convertHtmlContent;
+  });
+  context.subscriptions.push(disposableHello);
+  context.subscriptions.push(disposableWindow);
 }
 function deactivate() {
 }

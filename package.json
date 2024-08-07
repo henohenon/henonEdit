@@ -16,6 +16,10 @@
       {
         "command": "henon-edit.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "henon-edit.showWindow",
+        "title": "Show Window"
       }
     ]
   },
