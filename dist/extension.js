@@ -35,8 +35,6 @@ __export(extension_exports, {
 });
 module.exports = __toCommonJS(extension_exports);
 var vscode2 = __toESM(require("vscode"));
-var path = __toESM(require("path"));
-var fs = __toESM(require("fs"));
 
 // src/CustomEditor.ts
 var vscode = __toESM(require("vscode"));
@@ -84,16 +82,10 @@ function activate(context) {
       "Sample Webview",
       vscode2.ViewColumn.One,
       {
-        enableScripts: true,
-        localResourceRoots: [vscode2.Uri.file(path.join(context.extensionPath, "solid", "src"))]
+        enableScripts: true
       }
     );
-    const htmlPath = path.join(context.extensionPath, "solid", "index.html");
-    const htmlContent = fs.readFileSync(htmlPath, "utf8");
-    const assetsPath = vscode2.Uri.file(path.join(context.extensionPath, "solid", "src"));
-    const srcUri = panel.webview.asWebviewUri(assetsPath);
-    const convertHtmlContent = htmlContent.replace(/\.\/src\//g, `${srcUri.toString()}/`);
-    panel.webview.html = convertHtmlContent;
+    panel.webview.html = '<iframe src="http://localhost:3000" width="100%" height="500"></iframe>';
   });
   context.subscriptions.push(disposableHello);
   context.subscriptions.push(disposableWindow);

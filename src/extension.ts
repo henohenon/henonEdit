@@ -31,20 +31,20 @@ export function activate(context: vscode.ExtensionContext) {
 			'Sample Webview',
 			vscode.ViewColumn.One,
 			{
-				enableScripts: true,
-				localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'solid', 'src'))]
+				enableScripts: true
 			}
 		);
-		const htmlPath = path.join(context.extensionPath, 'solid', 'index.html');
+		/*
+		const htmlPath = path.join(context.extensionPath, 'solid', 'dist', 'index.html');
 		const htmlContent = fs.readFileSync(htmlPath, 'utf8');
 	
 		// パスを変換する
-		const assetsPath = vscode.Uri.file(path.join(context.extensionPath, 'solid', 'src'));
+		const assetsPath = vscode.Uri.file(path.join(context.extensionPath, 'solid', 'dist', 'assets'));
 		const srcUri = panel.webview.asWebviewUri(assetsPath);
 	
 		// HTMLコンテンツ内のパスを変換
-		const convertHtmlContent = htmlContent.replace(/\.\/src\//g, `${srcUri.toString()}/`);
-		panel.webview.html = convertHtmlContent;
+		const convertHtmlContent = htmlContent.replace(/\.\/assets\//g, `${srcUri.toString()}/`);*/
+		panel.webview.html = '<iframe src="http://localhost:3000" width="100%" height="500"></iframe>';
 	});
 
 	context.subscriptions.push(disposableHello);
