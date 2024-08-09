@@ -1,0 +1,5 @@
+{
+    "name": "node & pnpm",
+    "image": "node:latest",
+    "postCreateCommand": "npm install -g pnpm"
+}
