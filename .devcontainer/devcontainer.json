@@ -1,5 +1,6 @@
 {
     "name": "node & pnpm",
     "image": "node:latest",
+    "forwardPorts": [3000],
     "postCreateCommand": "npm install -g pnpm"
 }
