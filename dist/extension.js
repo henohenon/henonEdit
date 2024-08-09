@@ -72,6 +72,12 @@ var CustomEditor = class _CustomEditor {
 // src/extension.ts
 function activate(context) {
   console.log('Congratulations, your extension "henon-edit" is now active!');
+  vscode2.window.onDidChangeActiveTextEditor((editor) => {
+    console.log("onDidChangeActiveTextEditor");
+    if (editor) {
+      console.log("onDidChangeActiveTextEditor", editor);
+    }
+  });
   const disposableHello = vscode2.commands.registerCommand("henon-edit.helloWorld", () => {
     vscode2.window.showInformationMessage("Hennyo World from henon-edit!");
     vscode2.window.showInformationMessage("Hemyo World from henon-edit!");
