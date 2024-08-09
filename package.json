@@ -21,6 +21,17 @@
         "command": "henon-edit.showWindow",
         "title": "Show Window"
       }
+    ],
+    "customEditors": [
+      {
+        "viewType": "henon-edit.editor",
+        "displayName": "henon custom",
+        "selector": [
+          {
+            "filenamePattern": "*.henon"
+          }
+        ]
+      }
     ]
   },
   "scripts": {

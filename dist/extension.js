@@ -34,34 +34,70 @@ __export(extension_exports, {
   deactivate: () => deactivate
 });
 module.exports = __toCommonJS(extension_exports);
-var vscode = __toESM(require("vscode"));
+var vscode2 = __toESM(require("vscode"));
 var path = __toESM(require("path"));
 var fs = __toESM(require("fs"));
+
+// src/CustomEditor.ts
+var vscode = __toESM(require("vscode"));
+var CustomEditor = class _CustomEditor {
+  constructor(context) {
+    this.context = context;
+  }
+  static register(context) {
+    const provider = new _CustomEditor(context);
+    console.log("register");
+    const providerRegistration = vscode.window.registerCustomEditorProvider(_CustomEditor.viewType, provider);
+    return providerRegistration;
+  }
+  static viewType = "henon-edit.editor";
+  async resolveCustomTextEditor(document, webviewPanel, _token) {
+    webviewPanel.webview.options = { enableCommandUris: true };
+    webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview);
+    console.log("resolveCustomTextEditor", document.getText());
+  }
+  getHtmlForWebview(webview) {
+    return `<!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Custom Editor</title>
+      </head>
+      <body>
+        <h1>Hello from Custom Editor</h1>
+      </body>
+      </html>`;
+  }
+};
+
+// src/extension.ts
 function activate(context) {
   console.log('Congratulations, your extension "henon-edit" is now active!');
-  const disposableHello = vscode.commands.registerCommand("henon-edit.helloWorld", () => {
-    vscode.window.showInformationMessage("Hennyo World from henon-edit!");
-    vscode.window.showInformationMessage("Hemyo World from henon-edit!");
+  const disposableHello = vscode2.commands.registerCommand("henon-edit.helloWorld", () => {
+    vscode2.window.showInformationMessage("Hennyo World from henon-edit!");
+    vscode2.window.showInformationMessage("Hemyo World from henon-edit!");
   });
-  const disposableWindow = vscode.commands.registerCommand("henon-edit.showWindow", () => {
-    const panel = vscode.window.createWebviewPanel(
+  const disposableWindow = vscode2.commands.registerCommand("henon-edit.showWindow", () => {
+    const panel = vscode2.window.createWebviewPanel(
       "webview",
       "Sample Webview",
-      vscode.ViewColumn.One,
+      vscode2.ViewColumn.One,
       {
         enableScripts: true,
-        localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, "solid", "src"))]
+        localResourceRoots: [vscode2.Uri.file(path.join(context.extensionPath, "solid", "src"))]
       }
     );
     const htmlPath = path.join(context.extensionPath, "solid", "index.html");
     const htmlContent = fs.readFileSync(htmlPath, "utf8");
-    const assetsPath = vscode.Uri.file(path.join(context.extensionPath, "solid", "src"));
+    const assetsPath = vscode2.Uri.file(path.join(context.extensionPath, "solid", "src"));
     const srcUri = panel.webview.asWebviewUri(assetsPath);
     const convertHtmlContent = htmlContent.replace(/\.\/src\//g, `${srcUri.toString()}/`);
     panel.webview.html = convertHtmlContent;
   });
   context.subscriptions.push(disposableHello);
   context.subscriptions.push(disposableWindow);
+  context.subscriptions.push(CustomEditor.register(context));
 }
 function deactivate() {
 }

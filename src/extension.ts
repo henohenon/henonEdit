@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import { CustomEditor } from './CustomEditor';
 
 
 // This method is called when your extension is activated
@@ -48,6 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(disposableHello);
 	context.subscriptions.push(disposableWindow);
+	context.subscriptions.push(CustomEditor.register(context));
 }
 
 function getWebviewContent() {
